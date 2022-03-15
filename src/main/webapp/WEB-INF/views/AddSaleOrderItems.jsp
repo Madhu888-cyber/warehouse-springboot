@@ -1,0 +1,108 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap-grid.min.css">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+<script type="text/javascript"
+	src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="../bootstrap/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/popper.min.js"></script>
+<title>Sale Order Items Page</title>
+</head>
+<body>
+	<%@include file="Menu.jsp"%>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-heading bg-primary text-white">
+				<h1>Welcome to Sale Order Items Page!!</h1>
+			</div>
+			<!-- CARD HEADING END -->
+			<div class="card-body">
+				<form:form action="addSoItems" method="post" modelAttribute="saleOrderDetails">
+					
+					<form:hidden path="saleOrdHdrId" readonly="true" />
+
+					<div class="row col-sm-5">
+						<label class="col-sm-4 font-weight-bold">Order Code</label> <input
+							type="text" value="${saleOrder.orderCode}" class="form-control col-sm-5"
+							readonly="readonly" />
+					</div>
+
+				<hr />
+					<table class="table table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th>Sl No</th>
+								<th>Select Item</th>
+								<th>Quantity</th>
+								<th colspan="3"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+
+								<td><form:input path="slno" class="form-control"
+										readonly="true" size="2" /></td>
+								<td><form:select path="itemDetails" items="${custItems}"
+										itemValue="itemId" itemLabel="itemCode" class="form-control" />
+									<form:errors path="itemDetails" cssClass="text-danger"/>
+								</td>
+								<td><form:input path="itemsQty"
+										class="form-control col-sm-6" />
+									<form:errors path="itemsQty" cssClass="text-danger"/>		
+								</td>
+								<td><input type="submit" name="itemOperation" value="Add Item"
+									class="btn btn-outline-success" /></td>
+
+							</tr>
+						</tbody>
+					</table>
+					<br />
+					<hr />
+					<table class="table table-hover">
+
+						<thead class="thead-dark">
+							<tr>
+								<th>Sl No</th>
+								<th>Item</th>
+								<th>Base Cost</th>
+								<th>Quantity</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<c:forEach items="${saleOrder.saleDetails}" var="dtl">
+								<tr>
+									<td>${dtl.slno}</td>
+									<td>${dtl.itemDetails.itemCode}</td>
+									<td>${dtl.itemDetails.itemBaseCost}</td>
+									<td>${dtl.itemsQty}</td>
+									<td><a
+										href="removeItem?slno=${dtl.slno}&saleOrdHdrId=${dtl.saleOrdHdrId}"
+										class="btn btn-outline-danger">Remove Item</a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<br />
+					<br />
+					<c:if test="${!empty saleOrder.saleDetails}">
+						<input type="submit" name="itemOperation" value="Save and Continue"
+							class="btn btn-outline-success" />
+					</c:if>
+				</form:form>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>
